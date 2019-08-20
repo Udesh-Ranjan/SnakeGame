@@ -1,2 +1,2 @@
-# SnakeGame
-Snake-Game made with Java
+# Snake-Game
+Snake Game made with Java and C++ -------@~
