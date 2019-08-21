@@ -275,7 +275,7 @@ class LB extends Frame implements ActionListener,WindowListener
 		free();
 		frame_aram.setVisible(true);
 		this.setVisible(false);
-		System.exit(0);
+		
 	}
 	public void windowActivated(WindowEvent we){}
 	public void windowDeactivated(WindowEvent we){}
