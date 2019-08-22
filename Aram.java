@@ -127,8 +127,6 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 	public void windowDeactivated(WindowEvent we){}
 	public void windowClosing(WindowEvent we)
 	{
-		if(board!=null)
-			board.free();
 		board=null;
 		
 		this.setVisible(false);
