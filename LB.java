@@ -286,7 +286,7 @@ class LB extends Frame implements ActionListener,WindowListener
 	
 	public static void main(String $[])
 	{
-		LB leaderboard=new LB("O:/Projects/Snake Game/Class_Log.txt",null);
+		LB leaderboard=new LB("Class_Log.txt",null);
 		
 	}
 }
