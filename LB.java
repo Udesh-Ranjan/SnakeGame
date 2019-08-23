@@ -258,15 +258,15 @@ class LB extends Frame implements ActionListener,WindowListener
 	{
 		if(ae.getSource()==mode1)
 		{
-			initializeMode("O:/Projects/Snake Game/Class_Log.txt");
+			initializeMode("Class_Log.txt");
 		}
 		if(ae.getSource()==mode2)
 		{
-			initializeMode("O:/Projects/Snake Game/Bound_Log.txt");
+			initializeMode("Bound_Log.txt");
 		}
 		if(ae.getSource()==mode3)
 		{
-			initializeMode("O:/Projects/Snake Game/Rail_Log.txt");
+			initializeMode("Rail_Log.txt");
 		}
 	}
 	////////WindowListener////////
