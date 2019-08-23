@@ -282,7 +282,7 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 		if(x>=lb.topx&&x<=lb.topx+lb.length&&y>=lb.topy&&y<=lb.topy+lb.height)
 		{
 			System.out.println("Detected");
-			board=new LB("O:/Projects/Snake Game/Class_Log.txt",this);
+			board=new LB("Class_Log.txt",this);
 		}
 	}
 	////////Component Listener////////
