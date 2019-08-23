@@ -1,12 +1,61 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.File;
+import javax.imageio.ImageIO;
+
+class MD extends Dialog
+{
+	Image level_background;
+	Frame frame;
+	
+	public MD(Frame f)
+	{
+		super(f,"SETTING",true);
+		frame=f;
+		setSize(400,400);
+		
+		System.out.println("inside md");
+		try
+		{
+			level_background=ImageIO.read(new File("img/level.jpg"));
+			System.out.println(level_background);
+		}
+		catch(Exception e)
+		{
+			System.out.println(e);
+		}
+		setResizable(false);
+		setVisible(true);
+		
+	}
+	
+	public void paint(Graphics g)
+	{
+		g.drawImage(level_background,0,0,getWidth(),getHeight(),this);
+	}
+	
+}
 
 class Aram extends Frame implements WindowListener,MouseMotionListener,ComponentListener,MouseListener
 {
 	Frame1 frame1;
 	LB board;
+	Dialog setting;
 	boolean play_status=false;
 	boolean lb_status=false;
+	
+	Image img;
+	
+	Image level_background;
+	
+	int level=1;
+	Label lev=new Label("1",Label.CENTER);
+	Button set=new Button("SET");
+	Button up=new Button("UP");
+	Button down=new Button("DOWN");
+	
+	
+	int set_topx,set_topy,set_width=100,set_height=100;
 	
 	RenderingHints figure_Antialis_ON=new RenderingHints(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
 	RenderingHints text_Antialias_ON=new RenderingHints(RenderingHints.KEY_TEXT_ANTIALIASING,RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
@@ -96,9 +145,21 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 		addComponentListener(this);
 		addMouseListener(this);
 		
+		try
+		{
+			img=ImageIO.read(new File("img/images.jpg"));
+		}
+		catch(Exception ex)
+		{
+			img=null;
+		}
+		
 	}
 	public void paint(Graphics g)
 	{
+		set_topx=getWidth()-150;
+		set_topy=50;
+		
 		int len=200;
 		int hei=100;
 		int gap=100;
@@ -117,6 +178,9 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 		lb.drawActiveRect(g);
 		else
 		lb.drawDeactiveRect(g);
+	
+		if(img!=null)
+			g.drawImage(img,set_topx,set_topy,set_width,set_height,this);
 	}
 	//////Window Listener///////
 	public void windowClosed(WindowEvent we){}
@@ -135,6 +199,12 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 	////////MouseListener///////
 	public void mouseMoved(MouseEvent me)
 	{
+		if(img!=null)
+		{
+			int x=me.getX();
+			int y=me.getY();
+			
+		}
 		if(play!=null)
 		{
 			int x=me.getX();
@@ -198,7 +268,11 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 		int y=me.getY();
 		
 		
-		if(play!=null)
+		if(x>set_topx&&x<set_topx+set_width&&y>set_topy&&y<set_topy+set_height)
+		{	
+			MD dialog=new MD(this);
+		}
+		
 		if(x>=play.topx&&x<=play.topx+play.length&&y>=play.topy&&y<=play.topy+play.height)
 		{
 			frame1=new Frame1(this);
