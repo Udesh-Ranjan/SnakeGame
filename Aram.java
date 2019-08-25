@@ -3,27 +3,37 @@ import java.awt.event.*;
 import java.io.File;
 import javax.imageio.ImageIO;
 
-class MD extends Dialog
+class MD extends Dialog implements ActionListener
 {
 	Image level_background;
-	Frame frame;
+	Aram frame;
+	Choice choiceLevel=null;
+	Button enter;
 	
-	public MD(Frame f)
+	public MD(Aram f)
 	{
 		super(f,"SETTING",true);
+		this.setLayout(null);
 		frame=f;
 		setSize(400,400);
-		
-		System.out.println("inside md");
+		choiceLevel=new Choice();
+		choiceLevel.add("Easy");
+		choiceLevel.add("Medium");
+		choiceLevel.add("Hard");
+		choiceLevel.add("Champion");
+		choiceLevel.setBounds(100,250,200,50);
+		add(choiceLevel);
+		enter=new Button("ENTER");
+		enter.setBounds(300,330,50,30);
+		enter.addActionListener(this);
+		add(enter);
+		choiceLevel.addItemListener(frame);
 		try
 		{
 			level_background=ImageIO.read(new File("img/level.jpg"));
-			System.out.println(level_background);
 		}
 		catch(Exception e)
-		{
-			System.out.println(e);
-		}
+		{}
 		setResizable(false);
 		setVisible(true);
 		
@@ -34,26 +44,30 @@ class MD extends Dialog
 		g.drawImage(level_background,0,0,getWidth(),getHeight(),this);
 	}
 	
+	///////ActionListener//////
+	public void actionPerformed(ActionEvent ae)
+	{
+		if(ae.getActionCommand().equals("ENTER"))
+		{
+			setVisible(false);
+		}
+	}
 }
 
-class Aram extends Frame implements WindowListener,MouseMotionListener,ComponentListener,MouseListener
+class Aram extends Frame implements WindowListener,MouseMotionListener,ComponentListener,MouseListener,ItemListener,ActionListener
 {
 	Frame1 frame1;
 	LB board;
-	Dialog setting;
 	boolean play_status=false;
 	boolean lb_status=false;
+	//////Dialog for Settings/////////
+	MD dialog=null;
 	
 	Image img;
 	
 	Image level_background;
-	
+	///////Level of the Game/////////
 	int level=1;
-	Label lev=new Label("1",Label.CENTER);
-	Button set=new Button("SET");
-	Button up=new Button("UP");
-	Button down=new Button("DOWN");
-	
 	
 	int set_topx,set_topy,set_width=100,set_height=100;
 	
@@ -144,6 +158,7 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 		addMouseMotionListener(this);
 		addComponentListener(this);
 		addMouseListener(this);
+		dialog=null;
 		
 		try
 		{
@@ -270,18 +285,17 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 		
 		if(x>set_topx&&x<set_topx+set_width&&y>set_topy&&y<set_topy+set_height)
 		{	
-			MD dialog=new MD(this);
+			dialog=new MD(this);
 		}
 		
 		if(x>=play.topx&&x<=play.topx+play.length&&y>=play.topy&&y<=play.topy+play.height)
 		{
-			frame1=new Frame1(this);
+			frame1=new Frame1(this,level);
 		}
 		
 		if(lb!=null)
 		if(x>=lb.topx&&x<=lb.topx+lb.length&&y>=lb.topy&&y<=lb.topy+lb.height)
 		{
-			System.out.println("Detected");
 			board=new LB("Class_Log.txt",this);
 		}
 	}
@@ -293,7 +307,23 @@ class Aram extends Frame implements WindowListener,MouseMotionListener,Component
 	public void componentMoved(ComponentEvent ce){}
 	public void componentShown(ComponentEvent ce){}
 	public void componentHidden(ComponentEvent ce){}
-	
+	//////////Item Listener///////////
+	public void itemStateChanged(ItemEvent ie)
+	{
+		
+		Choice _choice=(Choice)ie.getItemSelectable();
+		
+		if(_choice.getSelectedItem().equals("Easy"))
+			level=1;
+		if(_choice.getSelectedItem().equals("Medium"))
+			level=2;
+		if(_choice.getSelectedItem().equals("Hard"))
+			level=3;
+		if(_choice.getSelectedItem().equals("Champion"))
+			level=4;
+	}
+	/////////ActionListener//////////
+	public void actionPerformed(ActionEvent ae){}
 	////////Main/////////
 	public static void main(String $[])
 	{
