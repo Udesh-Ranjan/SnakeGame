@@ -3,6 +3,7 @@ import java.util.Random;
 
 public class Classic_Loader implements Runnable
 {
+	int level;
 	public  Random rand;
 	public Classic_GameEnviron game;
 	public Classic_Node snake;
@@ -15,8 +16,9 @@ public class Classic_Loader implements Runnable
 	long minute=0;
 	long second=0;
 		
-	public Classic_Loader(Frame1 f)
+	public Classic_Loader(Frame1 f,int level)
 	{
+		this.level=level;
 		this.f=f;
 		game=new Classic_GameEnviron(f);
 		snake=new Classic_Node(200,200);
@@ -37,8 +39,29 @@ public class Classic_Loader implements Runnable
 				game.g2d.drawImage(game.img,0,0,game);
 				try
 				{
-					Thread.sleep(80);
-					millisec+=80;
+					if(level==1)
+					{
+						Thread.sleep(100);
+						millisec+=100;
+					}
+					else
+					if(level==2)
+					{
+						Thread.sleep(80);
+						millisec+=80;
+					}
+					else
+					if(level==3)
+					{
+						Thread.sleep(60);
+						millisec+=60;
+					}
+					else
+					{
+						Thread.sleep(36);
+						millisec+=36;
+					}
+					
 					if(millisec>=999)
 					{
 						second++;
@@ -60,15 +83,24 @@ public class Classic_Loader implements Runnable
 				
 				//Snake hit the ball
 				if(ballHit())
-				{
-					score++;
+				{	
+					if(level==1)
+						score++;
+					else
+					if(level==2)
+						score+=2;
+					else
+					if(level==3)
+						score+=4;
+					else
+						score+=8;
 					
 					Classic_Node.increment(snake);
 					
 					b.x=b.diameter+10+rand.nextInt(game.width-b.diameter-20);
 					b.y=b.diameter+40+rand.nextInt(game.height-b.diameter-50);
 					
-					System.out.println(b.x+" "+b.y);
+				
 				}
 				
 				if(Classic_Node.snakeCrash(snake,snake.next))

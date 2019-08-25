@@ -3,6 +3,8 @@ import java.util.Random;
 
 public class Railing_Loader implements Runnable
 {
+	int level;
+	
 	public  Random rand;
 	public Railing_GameEnviron game;
 	public Railing_Node snake;
@@ -17,8 +19,9 @@ public class Railing_Loader implements Runnable
 	long second=0;
 	
 	
-	public Railing_Loader(Frame1 f)
+	public Railing_Loader(Frame1 f,int level)
 	{
+		this.level=level;
 		this.f=f;
 		snake=new Railing_Node(200,200);
 		game=new Railing_GameEnviron(f);
@@ -41,8 +44,29 @@ public class Railing_Loader implements Runnable
 				game.g2d.drawImage(game.img,0,0,game);
 				try
 				{
-					Thread.sleep(90);
-					millisec+=90;
+					if(level==1)
+					{
+						Thread.sleep(100);
+						millisec+=100;
+					}
+					else
+					if(level==2)
+					{
+						Thread.sleep(80);
+						millisec+=80;
+					}
+					else
+					if(level==3)
+					{
+						Thread.sleep(60);
+						millisec+=60;
+					}
+					else
+					{
+						Thread.sleep(36);
+						millisec+=36;
+					}
+					
 					if(millisec>=999)
 					{
 						second++;
@@ -65,8 +89,19 @@ public class Railing_Loader implements Runnable
 				//Snake hit the ball
 				if(ballHit())
 				{
-					score=score+incr;
-					incr+=10;
+					
+					if(level==1)
+						score++;
+					else
+					if(level==2)
+						score+=2;
+					else
+					if(level==3)
+						score+=4;
+					else
+						score+=8;
+					
+					
 					Railing_Node.increment(snake);
 					boolean flag=false;
 					do
@@ -91,12 +126,10 @@ public class Railing_Loader implements Runnable
 							if(b.y+b.radius>=game.corn4_starty-b.diameter&&b.y-b.radius<=game.corn4_starty+game.bound_height+b.diameter)
 								flag=true;
 							
-							if(flag)
-								System.out.println("Detected");
 					}
 					while(flag);
 					
-					System.out.println(b.x+" "+b.y);
+					
 				}
 				
 				if(Railing_Node.snakeCrash(snake,snake.next)||boundaryCrash())

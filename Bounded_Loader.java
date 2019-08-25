@@ -2,12 +2,13 @@ import java.awt.*;
 import java.util.Random;
 public class Bounded_Loader implements Runnable
 {
+	int level;
 	public  Random rand;
 	public Bounded_GameEnviron game;
 	public Bounded_Node snake;
 	public Bounded_Ball b;
 	public int score=0;
-	public int incr=10;
+	
 	Frame1 f;
 	
 	long millisec=0;
@@ -16,9 +17,11 @@ public class Bounded_Loader implements Runnable
 	long second=0;
 	
 	
-	public Bounded_Loader(Frame1 f)
+	public Bounded_Loader(Frame1 f,int level)
 	{
 		this.f=f;
+		this.level=level;
+		
 		snake=new Bounded_Node(200,200);
 		game=new Bounded_GameEnviron(this.f);
 		snake.game=game;
@@ -37,14 +40,34 @@ public class Bounded_Loader implements Runnable
 				Bounded_Node.move(snake);
 				b.drawBall();
 				game.makeBoundary(game.bound_width,game.bound_height);
-				score++;
+				
 				
 				game.g2d.drawImage(game.img,0,0,game);
 				try
 				{
-					Thread.sleep(80);
+					if(level==1)
+					{
+						Thread.sleep(100);
+						millisec+=100;
+					}
+					else
+					if(level==2)
+					{
+						Thread.sleep(80);
+						millisec+=80;
+					}
+					else
+					if(level==3)
+					{
+						Thread.sleep(60);
+						millisec+=60;
+					}
+					else
+					{
+						Thread.sleep(36);
+						millisec+=36;
+					}
 					
-					millisec+=80;
 					if(millisec>=999)
 					{
 						second++;
@@ -67,8 +90,17 @@ public class Bounded_Loader implements Runnable
 				//Snake hit the ball
 				if(ballHit())
 				{
-					score+=incr;
-					incr+=10;
+					if(level==1)
+					score++;
+					else
+					if(level==2)
+					score+=2;
+					else
+					if(level==3)
+					score+=4;
+					else
+					score+=7;
+				
 					Bounded_Node.increment(snake);
 					
 					b.clearBall();
@@ -83,7 +115,6 @@ public class Bounded_Loader implements Runnable
 						b.y+=b.diameter+40+game.bound_height;
 					
 					
-					System.out.println(b.x+" "+b.y);
 				}
 				
 				if(Bounded_Node.snakeCrash(snake,snake.next)||Bounded_Node.boundaryCrash(snake))

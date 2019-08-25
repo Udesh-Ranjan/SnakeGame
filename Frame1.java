@@ -4,6 +4,7 @@
 	public class Frame1 extends Frame implements ActionListener,ComponentListener,WindowListener
 	{
 		Aram aram_frame;
+		int level;
 		public Button classic_button;
 		public Button bounded_button;
 		public Button railing_button;
@@ -22,10 +23,10 @@
 	
 		int sep=60;
 	
-		public Frame1(Aram aram_frame)
+		public Frame1(Aram aram_frame,int level)
 		{
 			super("Snake Game -------@~");
-			
+			this.level=level;
 			this.aram_frame=aram_frame;
 			this.setSize(700,700);
 			this.setLayout(null);
@@ -74,21 +75,21 @@
 		{
 				if(ae.getActionCommand().equals(classic_button.getLabel()))
 				{
-					cl=new Classic_Loader(this);
+					cl=new Classic_Loader(this,level);
 					t=new Thread(cl);
 					t.start();
 					this.setVisible(false);
 				}
 				if(ae.getActionCommand().equals(bounded_button.getLabel()))
 				{
-					bl=new Bounded_Loader(this);
+					bl=new Bounded_Loader(this,level);
 					t=new Thread(bl);
 					t.start();
 					this.setVisible(false);
 				}
 				if(ae.getActionCommand().equals(railing_button.getLabel()))
 				{
-					rl=new Railing_Loader(this);
+					rl=new Railing_Loader(this,level);
 					t=new Thread(rl);
 					t.start();
 					this.setVisible(false);
@@ -138,7 +139,7 @@
 		///////Main///////
 		public static void main(String $[])
 		{
-			Frame1 f=new Frame1(null);
+			Frame1 f=new Frame1(null,1);
 		}
 	
 	}
