@@ -1,6 +1,8 @@
 	import java.awt.*;
 	import java.awt.event.*;
-
+	import javax.imageio.ImageIO;
+	import java.io.File;
+	
 	public class Frame1 extends Frame implements ActionListener,ComponentListener,WindowListener
 	{
 		Aram aram_frame;
@@ -13,6 +15,7 @@
 		public Bounded_Loader bl;
 		public Railing_Loader rl;
 		
+		Image back;
 		Thread t;
 		
 		int width;
@@ -34,6 +37,14 @@
 			button_width=140;
 			button_height=60;
 		
+			try
+			{
+				back=ImageIO.read(new File("img/Back.jpg"));
+			}
+			catch(Exception ex)
+			{
+				back=null;
+			}
 			classic_button=new Button("Classic");
 			bounded_button=new Button("Bounded");
 			railing_button=new Button("Railing");
@@ -68,11 +79,19 @@
 		}
 		public void paint(Graphics g)
 		{
-			g.drawString("Hello",100,100);
+			g.setColor(Color.black);
+			
+			g.fillRect(0,0,getWidth(),getHeight());
+			
+			if(back!=null)
+			{
+				g.drawImage(back,0,0,getWidth(),getHeight(),this);
+			}
 		}
 		/////////ActionPerformed///////
 		public void actionPerformed(ActionEvent ae)
 		{
+			
 				if(ae.getActionCommand().equals(classic_button.getLabel()))
 				{
 					cl=new Classic_Loader(this,level);
@@ -106,7 +125,6 @@
 		public void windowClosing(WindowEvent we)
 		{
 			aram_frame.setVisible(true);
-			System.out.println("Closing");
 			this.setVisible(false);
 			aram_frame.setVisible(true);
 			
@@ -117,6 +135,8 @@
 		public void componentShown(ComponentEvent ce){}
 		public void componentResized(ComponentEvent ce)
 		{
+			repaint();
+			
 			Dimension dim=this.getSize();
 		
 			width=dim.width;
